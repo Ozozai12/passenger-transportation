@@ -28,8 +28,16 @@ export const Register = () => {
         navigate('/');
       })
       .catch(error => {
-        const errorMessage = error.message;
-        alert(`${errorMessage}`);
+        console.log(error.message);
+        if (error.message === 'Firebase: Error (auth/email-already-in-use).') {
+          alert('User with this email already exists');
+        }
+        if (
+          error.message ===
+          'Firebase: Password should be at least 6 characters (auth/weak-password).'
+        ) {
+          alert('Password should be at least 6 characters');
+        }
       });
   };
 
@@ -69,7 +77,6 @@ export const Register = () => {
       <p>
         Already have an account? <Link to="/login">Login</Link> then!
       </p>
-      {/* {userState !== undefined ? <p>{userState}</p> : <p>No user</p>} */}
       <GoogleAuth />
     </div>
   );

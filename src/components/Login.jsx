@@ -28,8 +28,9 @@ export const Login = () => {
         navigate('/');
       })
       .catch(error => {
-        const errorMessage = error.message;
-        alert(`${errorMessage}`);
+        if (error.message === 'Firebase: Error (auth/wrong-password).') {
+          alert('Wrong email or password');
+        }
       });
   };
 

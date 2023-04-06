@@ -12,9 +12,13 @@ export const Header = () => {
 
   return (
     <header>
-      <Link to="register">Register</Link>
-      <Link to="login">Login</Link>
-      <Link to="dashboard">Dashboard</Link>
+      {!user && (
+        <>
+          <Link to="register">Register</Link>
+          <Link to="login">Login</Link>
+        </>
+      )}
+      {user && <Link to="dashboard">Dashboard</Link>}
       {user ? (
         <p>
           {user}

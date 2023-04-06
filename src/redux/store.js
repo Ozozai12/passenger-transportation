@@ -8,10 +8,18 @@ import {
   REGISTER,
 } from 'redux-persist';
 import userReducer from './userSlice';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const authPersistConfig = {
+  key: 'user',
+  storage,
+  whitelist: ['token', 'email'],
+};
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    user: persistReducer(authPersistConfig, userReducer),
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -33,3 +41,5 @@ export const store = configureStore({
       },
     }),
 });
+
+export const persistor = persistStore(store);
