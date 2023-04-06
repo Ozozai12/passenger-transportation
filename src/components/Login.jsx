@@ -6,10 +6,12 @@ import { setUser } from 'redux/userSlice';
 
 export const Login = () => {
   const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
-  const handleSubmit = (email, pass) => {
+  const handleSubmit = (email, pass, event) => {
+    event.preventDefault();
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, pass)
       .then(({ user }) => {
@@ -33,7 +35,7 @@ export const Login = () => {
   return (
     <div>
       <h1>For using the passenger transporter, you should login first</h1>
-      <form onSubmit={() => handleSubmit(email, pass)}>
+      <form onSubmit={event => handleSubmit(email, pass, event)}>
         <label>
           Enter your email
           <input

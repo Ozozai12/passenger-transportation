@@ -5,27 +5,23 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from 'redux/userSlice';
 
-
 export const Register = () => {
   const dispatch = useDispatch();
-
   // const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
-  const handleSubmit = (email, pass) => {
+  const handleSubmit = (email, pass, event) => {
+    event.preventDefault();
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, pass)
       .then(({ user }) => {
-        // Signed in
-        // const user = userCredential.user;
         dispatch(
           setUser({
             email: user.email,
             id: user.uid,
             token: user.accessToken,
           })
- 
         );
 
         // ...
@@ -40,7 +36,7 @@ export const Register = () => {
   return (
     <div>
       <h1>For using the passenger transporter, you should register first</h1>
-      <form onSubmit={() => handleSubmit(email, pass)}>
+      <form onSubmit={event => handleSubmit(email, pass, event)}>
         {/* <label>
           Type your name
           <input
@@ -73,6 +69,7 @@ export const Register = () => {
       <p>
         Already have an account? <Link to="/login">Login</Link> then!
       </p>
+      {/* {userState !== undefined ? <p>{userState}</p> : <p>No user</p>} */}
       {/* <AuthProvider /> */}
     </div>
   );
