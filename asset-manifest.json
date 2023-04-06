@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/passenger-transportation/static/css/main.7acaea2f.css",
-    "main.js": "/passenger-transportation/static/js/main.0ee83e2a.js",
+    "main.js": "/passenger-transportation/static/js/main.2073b2be.js",
     "index.html": "/passenger-transportation/index.html",
     "main.7acaea2f.css.map": "/passenger-transportation/static/css/main.7acaea2f.css.map",
-    "main.0ee83e2a.js.map": "/passenger-transportation/static/js/main.0ee83e2a.js.map"
+    "main.2073b2be.js.map": "/passenger-transportation/static/js/main.2073b2be.js.map"
   },
   "entrypoints": [
     "static/css/main.7acaea2f.css",
-    "static/js/main.0ee83e2a.js"
+    "static/js/main.2073b2be.js"
   ]
 }
