@@ -5,30 +5,33 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from 'redux/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 export const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const [name, setName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+  const [sex, setSex] = useState('');
+  const [role, setRole] = useState('');
 
-  const handleSubmit = (email, pass, event) => {
+  const handleSubmit = async (name, email, pass, sex, role, event) => {
     event.preventDefault();
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, pass)
       .then(({ user }) => {
         dispatch(
           setUser({
+            name: name,
             email: user.email,
             id: user.uid,
             token: user.accessToken,
           })
         );
-        navigate('/');
       })
       .catch(error => {
-        console.log(error.message);
         if (error.message === 'Firebase: Error (auth/email-already-in-use).') {
           alert('User with this email already exists');
         }
@@ -39,26 +42,37 @@ export const Register = () => {
           alert('Password should be at least 6 characters');
         }
       });
+    await addDoc(collection(db, 'users'), {
+      name,
+      email,
+      sex,
+      role,
+    });
+    navigate('/');
   };
 
   return (
     <div>
       <h1>For using the passenger transporter, you should register first</h1>
-      <form onSubmit={event => handleSubmit(email, pass, event)}>
-        {/* <label>
+      <form
+        onSubmit={event => handleSubmit(name, email, pass, sex, role, event)}
+      >
+        <label>
           Type your name
           <input
             type="text"
             value={name}
+            required
             onChange={e => setName(e.currentTarget.value)}
           />
-        </label> */}
+        </label>
         <br />
         <label>
           Type your email
           <input
             type="email"
             value={email}
+            required
             onChange={e => setEmail(e.currentTarget.value)}
           />
         </label>
@@ -68,7 +82,28 @@ export const Register = () => {
           <input
             type="password"
             value={pass}
+            required
             onChange={e => setPass(e.currentTarget.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Choose your sex
+          <input
+            type="text"
+            value={sex}
+            required
+            onChange={e => setSex(e.currentTarget.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Choose your role
+          <input
+            type="text"
+            value={role}
+            required
+            onChange={e => setRole(e.currentTarget.value)}
           />
         </label>
         <br />
