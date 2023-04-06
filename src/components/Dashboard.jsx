@@ -1,3 +1,5 @@
+import { Navigate } from 'react-router-dom';
+
 export const Dashboard = () => {
-  return <h1>Dashboard Page</h1>;
+  return <Navigate to="/login" />;
 };
