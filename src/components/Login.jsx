@@ -3,9 +3,12 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setUser } from 'redux/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { GoogleAuth } from './GoogleAuth';
 
 export const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
@@ -15,8 +18,6 @@ export const Login = () => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, pass)
       .then(({ user }) => {
-        // Signed in
-        // const user = userCredential.user;
         dispatch(
           setUser({
             email: user.email,
@@ -24,11 +25,11 @@ export const Login = () => {
             token: user.accessToken,
           })
         );
+        navigate('/');
       })
       .catch(error => {
-        // const errorMessage = error.message;
-        // const errorCode = error.code;
-        console.error(error);
+        const errorMessage = error.message;
+        alert(`${errorMessage}`);
       });
   };
 
@@ -59,6 +60,7 @@ export const Login = () => {
       <p>
         You don't have an account? <Link to="/register">Register</Link> then!
       </p>
+      <GoogleAuth />
     </div>
   );
 };

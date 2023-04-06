@@ -1,12 +1,14 @@
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-// import { AuthProvider } from 'auth';
+import { GoogleAuth } from 'components/GoogleAuth';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from 'redux/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
@@ -23,13 +25,11 @@ export const Register = () => {
             token: user.accessToken,
           })
         );
-
-        // ...
+        navigate('/');
       })
       .catch(error => {
-        // const errorMessage = error.message;
-        // const errorCode = error.code;
-        console.error(error);
+        const errorMessage = error.message;
+        alert(`${errorMessage}`);
       });
   };
 
@@ -70,7 +70,7 @@ export const Register = () => {
         Already have an account? <Link to="/login">Login</Link> then!
       </p>
       {/* {userState !== undefined ? <p>{userState}</p> : <p>No user</p>} */}
-      {/* <AuthProvider /> */}
+      <GoogleAuth />
     </div>
   );
 };

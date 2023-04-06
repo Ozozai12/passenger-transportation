@@ -1,5 +1,7 @@
-import { Navigate } from 'react-router-dom';
-
 export const Dashboard = () => {
-  return <Navigate to="/login" />;
+  return (
+    <>
+      <h1>Dashboard page</h1>
+    </>
+  );
 };
