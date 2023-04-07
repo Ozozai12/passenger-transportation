@@ -1,5 +1,4 @@
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { GoogleAuth } from 'components/GoogleAuth';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -7,6 +6,10 @@ import { setUser } from 'redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+
+import { GoogleAuth } from 'components/GoogleAuth';
+import { FacebookAuth } from './FacebookAuth';
+import { PhoneAuth } from './PhoneAuth';
 
 export const Register = () => {
   const dispatch = useDispatch();
@@ -113,6 +116,8 @@ export const Register = () => {
         Already have an account? <Link to="/login">Login</Link> then!
       </p>
       <GoogleAuth />
+      <FacebookAuth />
+      <PhoneAuth />
     </div>
   );
 };

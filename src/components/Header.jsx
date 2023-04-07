@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from 'redux/userSlice';
 
 export const Header = () => {
-  const user = useSelector(state => state.user.email);
+  const user = useSelector(state => state.user.name);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
