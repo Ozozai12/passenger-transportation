@@ -2,9 +2,10 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUser } from 'redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc } from 'firebase/firestore';
+
+import { setUser } from 'redux/userSlice';
 import { db } from '../firebase';
 
 import { GoogleAuth } from 'components/GoogleAuth';

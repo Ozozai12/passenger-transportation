@@ -1,11 +1,15 @@
 import { Route, Routes } from 'react-router-dom';
+
 import { Layout } from './Layout';
 import { RegisterPage } from 'pages/RegisterPage';
 import { LoginPage } from 'pages/LoginPage';
 import { DashboardPage } from 'pages/DashboardPage';
 import { NotFoundPage } from 'pages/NotFoundPage';
+import { AdminPage } from 'pages/AdminPage';
+
 import { RestrictedRoute } from './RestrictedRoute';
 import { PrivateRoute } from './PrivateRoute';
+import { AdminRoute } from './AdminRoute';
 
 export const App = () => {
   return (
@@ -16,6 +20,10 @@ export const App = () => {
           element={
             <PrivateRoute component={DashboardPage} redirectTo="/login" />
           }
+        />
+        <Route
+          path="admin"
+          element={<AdminRoute component={AdminPage} redirectTo="/login" />}
         />
         <Route
           path="register"

@@ -4,6 +4,9 @@ import { removeUser } from 'redux/userSlice';
 
 export const Header = () => {
   const user = useSelector(state => state.user.name);
+  const admin = useSelector(
+    state => state.user.email === 'dante120591@gmail.com'
+  );
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -19,6 +22,7 @@ export const Header = () => {
         </>
       )}
       {user && <Link to="dashboard">Dashboard</Link>}
+      {admin && <Link to="admin">Editing users</Link>}
       {user ? (
         <p>
           {user}
