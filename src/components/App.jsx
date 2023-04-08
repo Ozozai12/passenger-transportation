@@ -6,6 +6,7 @@ import { LoginPage } from 'pages/LoginPage';
 import { DashboardPage } from 'pages/DashboardPage';
 import { NotFoundPage } from 'pages/NotFoundPage';
 import { AdminPage } from 'pages/AdminPage';
+import { UserAccountPage } from 'pages/UserAccountPage';
 
 import { RestrictedRoute } from './RestrictedRoute';
 import { PrivateRoute } from './PrivateRoute';
@@ -19,6 +20,12 @@ export const App = () => {
           index
           element={
             <PrivateRoute component={DashboardPage} redirectTo="/login" />
+          }
+        />
+        <Route
+          path="user"
+          element={
+            <PrivateRoute component={UserAccountPage} redirectTo="/login" />
           }
         />
         <Route

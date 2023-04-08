@@ -21,7 +21,12 @@ export const Header = () => {
           <Link to="login">Login</Link>
         </>
       )}
-      {user && <Link to="dashboard">Dashboard</Link>}
+      {user && (
+        <>
+          <Link to="dashboard">Dashboard</Link>
+          <Link to="user">My account</Link>
+        </>
+      )}
       {admin && <Link to="admin">Editing users</Link>}
       {user ? (
         <p>

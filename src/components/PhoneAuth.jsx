@@ -3,10 +3,13 @@ import {
   signInWithPhoneNumber,
   RecaptchaVerifier,
 } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUser } from 'redux/userSlice';
 import { useNavigate } from 'react-router-dom';
+
+import { setUser } from 'redux/userSlice';
+import { db } from '../firebase';
 
 export const PhoneAuth = () => {
   const countryCode = '+38';
@@ -67,6 +70,12 @@ export const PhoneAuth = () => {
             token: user.accessToken,
           })
         );
+        addDoc(collection(db, 'users'), {
+          name: user.phoneNumber,
+          email: 'not specified',
+          sex: 'not specified',
+          role: 'not specified',
+        });
         navigate('/');
       })
       .catch(error => {
