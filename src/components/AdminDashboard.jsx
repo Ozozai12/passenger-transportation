@@ -2,13 +2,11 @@ import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import { db } from '../firebase';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 export const AdminDashboard = () => {
   const [users, setUsers] = useState([]);

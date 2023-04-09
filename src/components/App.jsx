@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from 'react-bootstrap';
 
 import { Layout } from './Layout';
 import { RegisterPage } from 'pages/RegisterPage';

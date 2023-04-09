@@ -30,6 +30,12 @@ export const Dashboard = () => {
     querySnapshot.forEach(doc => {
       const trip = doc.data();
       trip.id = doc.id;
+
+      const originalDate = doc.data().startsAt;
+      const dateParts = originalDate.split('-');
+      const newDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+      trip.startsAt = newDate;
+
       array.unshift(trip);
     });
     setTrips(array);
@@ -57,7 +63,7 @@ export const Dashboard = () => {
                   <Card.Text>
                     Trip creator: {trip.owner}
                     <br />
-                    Trip starts at: {trip.startsAt}
+                    Date of trip: {trip.startsAt}
                     <br />
                     Number of passengers: {trip.passangersNumber}
                     <br />
