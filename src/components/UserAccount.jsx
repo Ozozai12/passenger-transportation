@@ -1,21 +1,19 @@
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { db } from '../firebase';
-import { setUser } from 'redux/userSlice';
 
 export const UserAccount = () => {
-  const dispatch = useDispatch();
   const [currentUser, setCurrentUser] = useState('User');
+
   const [changingName, setChangingName] = useState(false);
   const [changingEmail, setChangingEmail] = useState(false);
-  const [changingSex, setChangingSex] = useState(false);
   const [changingRole, setChangingRole] = useState(false);
+
   const [displayName, setDisplayName] = useState(currentUser.name);
   const [displayEmail, setDisplayEmail] = useState(currentUser.email);
-  const [displaySex, setDisplaySex] = useState(currentUser.email);
   const [displayRole, setDisplayRole] = useState(currentUser.email);
 
   const currentUserId = useSelector(state => state.user.id);
@@ -31,7 +29,6 @@ export const UserAccount = () => {
     setCurrentUser(user);
     setDisplayName(user.name);
     setDisplayEmail(user.email);
-    setDisplaySex(user.sex);
     setDisplayRole(user.role);
   };
 

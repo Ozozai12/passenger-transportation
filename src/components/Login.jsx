@@ -27,7 +27,6 @@ export const Login = () => {
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach(doc => {
-      // doc.data() is never undefined for query doc snapshots
       nameByEmail = doc.data().name;
     });
     return nameByEmail;

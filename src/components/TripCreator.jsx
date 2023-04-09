@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { collection, addDoc } from 'firebase/firestore';
+
 import { db } from '../firebase';
 
 export const TripCreator = () => {
