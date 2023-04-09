@@ -109,7 +109,9 @@ export const Register = () => {
               required
               onChange={e => setRole(e.currentTarget.value)}
             >
-              <option value="driver">Driver</option>
+              <option selected value="driver">
+                Driver
+              </option>
               <option value="passenger">Passenger</option>
               <option value="manager">Manager</option>
             </Form.Select>

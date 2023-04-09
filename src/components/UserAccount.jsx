@@ -19,7 +19,7 @@ export const UserAccount = () => {
   const [displayRole, setDisplayRole] = useState(currentUser.email);
 
   const currentUserId = useSelector(state => state.user.id);
-  const isUserAdmin = currentUserId === '33wHXe68MldkHPBE41VatpaZhOB2';
+  const isUserAdmin = currentUserId === 'STRBbSILboYQVD93B17xHCMXE8t1';
 
   useEffect(() => {
     getUserById(currentUserId);
