@@ -11,7 +11,7 @@ import { db } from '../firebase';
 export const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
 
-  const admin = useSelector(state => state.user.email);
+  const isAdmin = useSelector(state => state.user.email);
 
   useEffect(() => {
     getUsers();
@@ -49,7 +49,7 @@ export const AdminDashboard = () => {
                   <Card.Body>
                     <Card.Title>Name: {user.name}</Card.Title>
                     <p>Email: {user.email}</p>
-                    {user.email === admin ? (
+                    {user.email === isAdmin ? (
                       <span>Role: {user.role}</span>
                     ) : (
                       <>
