@@ -12,6 +12,7 @@ import { setUser } from 'redux/userSlice';
 
 import { useNavigate } from 'react-router-dom';
 import { db } from '../firebase';
+import { Button } from 'react-bootstrap';
 
 export const FacebookAuth = () => {
   const dispatch = useDispatch();
@@ -73,8 +74,8 @@ export const FacebookAuth = () => {
       });
   };
   return (
-    <button type="button" onClick={() => handleFacebookAuth()}>
-      Facebook
-    </button>
+    <Button type="button" onClick={() => handleFacebookAuth()}>
+      Sign in with Facebook
+    </Button>
   );
 };

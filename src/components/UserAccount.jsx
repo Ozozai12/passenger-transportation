@@ -3,10 +3,12 @@ import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import { Button, Form } from 'react-bootstrap';
+
 import { db } from '../firebase';
 
 export const UserAccount = () => {
-  const [currentUser, setCurrentUser] = useState('User');
+  const [currentUser, setCurrentUser] = useState({});
 
   const [changingName, setChangingName] = useState(false);
   const [changingEmail, setChangingEmail] = useState(false);
@@ -17,6 +19,7 @@ export const UserAccount = () => {
   const [displayRole, setDisplayRole] = useState(currentUser.email);
 
   const currentUserId = useSelector(state => state.user.id);
+  const isUserAdmin = currentUserId === '33wHXe68MldkHPBE41VatpaZhOB2';
 
   useEffect(() => {
     getUserById(currentUserId);
@@ -66,98 +69,165 @@ export const UserAccount = () => {
   };
 
   return (
-    <>
+    <div style={{ width: 350 }}>
       <h1>User's account</h1>
       <p>Here you can edit information about yourself</p>
-      <form onSubmit={e => handleNameChange(e)}>
-        <label>
-          Display name:
-          {changingName && (
-            <>
-              <input
-                type="text"
-                value={displayName}
-                onChange={e => setDisplayName(e.currentTarget.value)}
-              />
-              <button type="submit">Accept</button>
-            </>
-          )}
+      <Form onSubmit={e => handleNameChange(e)}>
+        <Form.Group
+          className="mb-3"
+          controlId="formName"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          Display name:{' '}
           {!changingName && (
             <>
-              <span> {currentUser.name} </span>
-              <button
+              {currentUser.name}
+              <Button
+                size="sm"
+                variant="secondary"
                 onClick={() => {
                   setChangingName(!changingName);
                 }}
               >
                 Edit
-              </button>
+              </Button>
             </>
           )}
-        </label>
-      </form>
-      <form onSubmit={e => handleEmailChange(e)}>
-        <label>
-          Your email:
-          {changingEmail && (
+          {changingName && (
             <>
-              <input
+              <Form.Control
+                style={{
+                  width: 150,
+                  marginLeft: 0,
+                  marginRight: 'auto',
+                  fontSize: 16,
+                  paddingLeft: 5,
+                }}
+                size="sm"
                 type="text"
-                value={displayEmail}
-                onChange={e => setDisplayEmail(e.currentTarget.value)}
+                value={displayName}
+                onChange={e => setDisplayName(e.currentTarget.value)}
               />
-              <button type="submit">Accept</button>
+              <Button size="sm" type="submit" variant="success">
+                Accept
+              </Button>
             </>
           )}
-          {!changingEmail && (
-            <>
-              <span> {currentUser.email} </span>
-              <button
-                onClick={() => {
-                  setChangingEmail(!changingEmail);
-                }}
-              >
-                Edit
-              </button>
-            </>
-          )}
-        </label>
-      </form>
-      <form onSubmit={e => handleRoleChange(e)}>
-        <label>
-          Your role:
-          {changingRole && (
-            <>
-              <select
-                id="role"
-                value={displayRole}
-                onChange={e => {
-                  setDisplayRole(e.currentTarget.value);
-                }}
-              >
-                <option value="not specified">not specified</option>
-                <option value="driver">driver</option>
-                <option value="passenger">passenger</option>
-                <option value="manager">manager</option>
-              </select>
-              <button type="submit">Accept</button>
-            </>
-          )}
-        </label>
-      </form>
+        </Form.Group>
+      </Form>
 
-      {!changingRole && (
-        <>
-          <span> {currentUser.role} </span>
-          <button
-            onClick={() => {
-              setChangingRole(!changingRole);
+      {isUserAdmin ? (
+        ''
+      ) : (
+        <Form onSubmit={e => handleEmailChange(e)}>
+          <Form.Group
+            className="mb-3"
+            controlId="formEmail"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}
           >
-            Edit
-          </button>
-        </>
+            Your email:{' '}
+            {!changingEmail && (
+              <>
+                {currentUser.email}
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => {
+                    setChangingEmail(!changingEmail);
+                  }}
+                >
+                  Edit
+                </Button>
+              </>
+            )}
+            {changingEmail && (
+              <>
+                <Form.Control
+                  type="text"
+                  style={{
+                    width: 150,
+                    marginLeft: 0,
+                    marginRight: 'auto',
+                    fontSize: 16,
+                    paddingLeft: 5,
+                  }}
+                  size="sm"
+                  value={displayEmail}
+                  onChange={e => setDisplayEmail(e.currentTarget.value)}
+                />
+                <Button size="sm" type="submit" variant="success">
+                  Accept
+                </Button>
+              </>
+            )}
+          </Form.Group>
+        </Form>
       )}
-    </>
+
+      {isUserAdmin ? (
+        ''
+      ) : (
+        <Form onSubmit={e => handleRoleChange(e)}>
+          <Form.Group
+            className="mb-3"
+            controlId="formRole"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            Your role:{' '}
+            {!changingRole && (
+              <>
+                {currentUser.role}
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => {
+                    setChangingRole(!changingRole);
+                  }}
+                >
+                  Edit
+                </Button>
+              </>
+            )}
+            {changingRole && (
+              <>
+                <Form.Select
+                  id="dropdown-basic-button"
+                  value={displayRole}
+                  variant="secondary"
+                  style={{
+                    width: 160,
+                    marginLeft: 5,
+                    marginRight: 'auto',
+                    fontSize: 16,
+                    paddingLeft: 5,
+                  }}
+                  size="sm"
+                  onChange={e => setDisplayRole(e.currentTarget.value)}
+                >
+                  <option value="driver">driver</option>
+                  <option value="passenger">passenger</option>
+                  <option value="manager">manager</option>
+                </Form.Select>
+                <Button size="sm" type="submit" variant="success">
+                  Accept
+                </Button>
+              </>
+            )}
+          </Form.Group>
+        </Form>
+      )}
+    </div>
   );
 };

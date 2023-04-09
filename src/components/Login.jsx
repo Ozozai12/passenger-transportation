@@ -5,12 +5,13 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import { SignGroup } from './SignGroup';
+
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
 import { setUser } from 'redux/userSlice';
 import { db } from '../firebase';
-
-import { GoogleAuth } from './GoogleAuth';
-import { FacebookAuth } from './FacebookAuth';
-import { PhoneAuth } from './PhoneAuth';
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -56,35 +57,56 @@ export const Login = () => {
   };
 
   return (
-    <div>
-      <h1>For using the passenger transporter, you should login first</h1>
-      <form onSubmit={event => handleSubmit(email, pass, event)}>
-        <label>
-          Enter your email
-          <input
+    <div
+      style={{
+        width: 600,
+
+        marginRight: 'auto',
+        marginLeft: 'auto',
+      }}
+    >
+      <h1 style={{ textAlign: 'center' }}>
+        For using the PT, you should login first
+      </h1>
+      <Form onSubmit={event => handleSubmit(email, pass, event)}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
             type="email"
+            placeholder="youremail@mail.com"
             value={email}
+            required
             onChange={e => setEmail(e.currentTarget.value)}
           />
-        </label>
-        <br />
-        <label>
-          Enter password
-          <input
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type="password"
+            placeholder="der_parol"
             value={pass}
+            required
             onChange={e => setPass(e.currentTarget.value)}
           />
-        </label>
-        <br />
-        <button type="submit">Login</button>
-      </form>
-      <p>
+        </Form.Group>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 60,
+          }}
+        >
+          <Button variant="primary" type="submit" style={{ width: 300 }}>
+            Login
+          </Button>
+        </div>
+      </Form>
+      <p style={{ textAlign: 'center', marginTop: 20 }}>
         You don't have an account? <Link to="/register">Register</Link> then!
       </p>
-      <GoogleAuth />
-      <FacebookAuth />
-      <PhoneAuth />
+      <SignGroup />
     </div>
   );
 };

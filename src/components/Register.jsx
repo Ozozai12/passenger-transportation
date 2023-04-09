@@ -5,12 +5,13 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
 import { setUser } from 'redux/userSlice';
 import { db } from '../firebase';
 
-import { GoogleAuth } from 'components/GoogleAuth';
-import { FacebookAuth } from './FacebookAuth';
-import { PhoneAuth } from './PhoneAuth';
+import { SignGroup } from './SignGroup';
 
 export const Register = () => {
   const dispatch = useDispatch();
@@ -55,57 +56,83 @@ export const Register = () => {
   };
 
   return (
-    <div>
-      <h1>For using the passenger transporter, you should register first</h1>
-      <form onSubmit={event => handleSubmit(name, email, pass, role, event)}>
-        <label>
-          Type your name
-          <input
-            type="text"
-            value={name}
-            required
-            onChange={e => setName(e.currentTarget.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Type your email
-          <input
-            type="email"
-            value={email}
-            required
-            onChange={e => setEmail(e.currentTarget.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Choose password
-          <input
-            type="password"
-            value={pass}
-            required
-            onChange={e => setPass(e.currentTarget.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Choose your role
-          <input
-            type="text"
-            value={role}
-            required
-            onChange={e => setRole(e.currentTarget.value)}
-          />
-        </label>
-        <br />
-        <button type="submit">Register</button>
-      </form>
-      <p>
-        Already have an account? <Link to="/login">Login</Link> then!
-      </p>
-      <GoogleAuth />
-      <FacebookAuth />
-      <PhoneAuth />
+    <div
+      style={{
+        width: 600,
+        marginRight: 'auto',
+        marginLeft: 'auto',
+      }}
+    >
+      <h1 style={{ textAlign: 'center' }}>
+        For using the PT, you should register first
+      </h1>
+      <div>
+        <Form onSubmit={event => handleSubmit(name, email, pass, role, event)}>
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Label>Your name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="For example, Vova"
+              value={name}
+              required
+              onChange={e => setName(e.currentTarget.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="youremail@mail.com"
+              value={email}
+              required
+              onChange={e => setEmail(e.currentTarget.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="der_parol"
+              value={pass}
+              required
+              onChange={e => setPass(e.currentTarget.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicRole">
+            <Form.Label>Choose your role</Form.Label>
+            <Form.Select
+              aria-label="Default select example"
+              value={role}
+              required
+              onChange={e => setRole(e.currentTarget.value)}
+            >
+              <option value="driver">Driver</option>
+              <option value="passenger">Passenger</option>
+              <option value="manager">Manager</option>
+            </Form.Select>
+          </Form.Group>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 60,
+            }}
+          >
+            <Button variant="primary" type="submit" style={{ width: 300 }}>
+              Register
+            </Button>
+          </div>
+        </Form>
+
+        <p style={{ textAlign: 'center', marginTop: 20 }}>
+          Already have an account? <Link to="/login">Login</Link> then!
+        </p>
+        <SignGroup />
+      </div>
     </div>
   );
 };

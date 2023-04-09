@@ -1,7 +1,14 @@
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+
+import { db } from '../firebase';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 export const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -36,36 +43,41 @@ export const AdminDashboard = () => {
       <h1>Editing users</h1>
       <div>
         <p>Existed users:</p>
-        <ul>
+        <Row xs={1} md={3} className="g-4">
           {users.map(user => {
             return (
-              <li key={user.id}>
-                <p>Name: {user.name}</p>
-                <p>Email: {user.email}</p>
-                {user.email === admin ? (
-                  <p>Role: {user.role}</p>
-                ) : (
-                  <>
-                    <label>
-                      Role:
-                      <select
-                        id="role"
-                        defaultValue={user.role}
-                        onChange={e => {
-                          roleUpdater(user.id, e.currentTarget.value);
-                        }}
-                      >
-                        <option value="driver">Driver</option>
-                        <option value="passenger">Passenger</option>
-                        <option value="manager">Manager</option>
-                      </select>
-                    </label>
-                  </>
-                )}
-              </li>
+              <Col key={user.id}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>Name: {user.name}</Card.Title>
+                    <p>Email: {user.email}</p>
+                    {user.email === admin ? (
+                      <span>Role: {user.role}</span>
+                    ) : (
+                      <>
+                        <label>
+                          Role:
+                          <select
+                            id="role"
+                            defaultValue={user.role}
+                            style={{ marginLeft: 5 }}
+                            onChange={e => {
+                              roleUpdater(user.id, e.currentTarget.value);
+                            }}
+                          >
+                            <option value="driver">Driver</option>
+                            <option value="passenger">Passenger</option>
+                            <option value="manager">Manager</option>
+                          </select>
+                        </label>
+                      </>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
             );
           })}
-        </ul>
+        </Row>
       </div>
     </>
   );

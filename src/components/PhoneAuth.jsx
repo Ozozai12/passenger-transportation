@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { setUser } from 'redux/userSlice';
 import { db } from '../firebase';
+import { Button, Form } from 'react-bootstrap';
 
 export const PhoneAuth = () => {
   const countryCode = '+38';
@@ -85,35 +86,42 @@ export const PhoneAuth = () => {
 
   return (
     <>
-      <button type="button" onClick={() => setShowPhoneAuth(true)}>
-        Phone
-      </button>
+      <Button type="button" onClick={() => setShowPhoneAuth(true)}>
+        Sign in with phone
+      </Button>
       {showPhoneAuth && (
         <>
-          <form onSubmit={e => requestOtp(e)}>
-            <label>
-              Enter your phone number
-              <input
+          <Form onSubmit={e => requestOtp(e)}>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Enter your phone number</Form.Label>
+              <Form.Control
                 type="tel"
                 value={number}
                 onChange={e => setNumber(e.currentTarget.value)}
               />
-            </label>
-            <button type="submit" disabled={!isActive}>
+            </Form.Group>
+            <Button type="submit" disabled={!isActive}>
               Send me a code
-            </button>
-          </form>
+            </Button>
+          </Form>
           {showOtp && number.length === 13 && (
-            <form onSubmit={e => handleOtpSubmit(e)}>
-              <label>
-                <input
+            <Form onSubmit={e => handleOtpSubmit(e)}>
+              <Form.Group>
+                <Form.Control
                   type="number"
                   value={otp}
                   onChange={e => setOtp(e.currentTarget.value)}
                 />
-              </label>
-              <button type="submit">Sighn in</button>
-            </form>
+              </Form.Group>
+              <Button
+                type="submit"
+                style={{
+                  marginTop: 15,
+                }}
+              >
+                Sign in
+              </Button>
+            </Form>
           )}
           <div id="recapcha-container"></div>
         </>

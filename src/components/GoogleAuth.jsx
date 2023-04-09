@@ -10,6 +10,8 @@ import {
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import Button from 'react-bootstrap/Button';
+
 import { setUser } from 'redux/userSlice';
 import { db } from '../firebase';
 
@@ -74,8 +76,8 @@ export const GoogleAuth = () => {
   };
 
   return (
-    <button type="button" onClick={() => handleGoogleAuth()}>
-      Google
-    </button>
+    <Button type="button" onClick={() => handleGoogleAuth()}>
+      Sign in with Google
+    </Button>
   );
 };
