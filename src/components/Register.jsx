@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 import { setUser } from 'redux/userSlice';
 import { db } from '../firebase';
@@ -18,14 +18,13 @@ export const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
-  const [sex, setSex] = useState('');
   const [role, setRole] = useState('');
 
-  const handleSubmit = async (name, email, pass, sex, role, event) => {
+  const handleSubmit = async (name, email, pass, role, event) => {
     event.preventDefault();
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, pass)
-      .then(({ user }) => {
+      .then(async ({ user }) => {
         dispatch(
           setUser({
             name: name,
@@ -34,6 +33,11 @@ export const Register = () => {
             token: user.accessToken,
           })
         );
+        await setDoc(doc(db, 'users', user.uid), {
+          name,
+          email,
+          role,
+        });
       })
       .catch(error => {
         if (error.message === 'Firebase: Error (auth/email-already-in-use).') {
@@ -46,21 +50,14 @@ export const Register = () => {
           alert('Password should be at least 6 characters');
         }
       });
-    await addDoc(collection(db, 'users'), {
-      name,
-      email,
-      sex,
-      role,
-    });
+
     navigate('/');
   };
 
   return (
     <div>
       <h1>For using the passenger transporter, you should register first</h1>
-      <form
-        onSubmit={event => handleSubmit(name, email, pass, sex, role, event)}
-      >
+      <form onSubmit={event => handleSubmit(name, email, pass, role, event)}>
         <label>
           Type your name
           <input
@@ -88,16 +85,6 @@ export const Register = () => {
             value={pass}
             required
             onChange={e => setPass(e.currentTarget.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Choose your sex
-          <input
-            type="text"
-            value={sex}
-            required
-            onChange={e => setSex(e.currentTarget.value)}
           />
         </label>
         <br />

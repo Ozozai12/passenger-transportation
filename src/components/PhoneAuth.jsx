@@ -3,7 +3,7 @@ import {
   signInWithPhoneNumber,
   RecaptchaVerifier,
 } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -70,7 +70,7 @@ export const PhoneAuth = () => {
             token: user.accessToken,
           })
         );
-        addDoc(collection(db, 'users'), {
+        setDoc(doc(db, 'users', user.uid), {
           name: user.phoneNumber,
           email: 'not specified',
           sex: 'not specified',
@@ -79,7 +79,7 @@ export const PhoneAuth = () => {
         navigate('/');
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.message);
       });
   };
 

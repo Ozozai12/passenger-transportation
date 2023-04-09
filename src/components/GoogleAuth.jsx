@@ -1,5 +1,12 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  setDoc,
+  doc,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,10 +22,10 @@ export const GoogleAuth = () => {
     const q = query(usersRef, where('email', '==', email));
     const querySnapshot = await getDocs(q);
 
-    const emailExists = querySnapshot._snapshot.docChanges.length === 0;
+    const emailNotExists = querySnapshot._snapshot.docChanges.length === 0;
 
-    if (emailExists) {
-      await addDoc(collection(db, 'users'), {
+    if (emailNotExists) {
+      await setDoc(doc(db, 'users', id), {
         name,
         email,
         sex: 'not specified',

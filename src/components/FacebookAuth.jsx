@@ -1,5 +1,12 @@
 import { getAuth, signInWithPopup, FacebookAuthProvider } from 'firebase/auth';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  setDoc,
+  doc,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
 import { setUser } from 'redux/userSlice';
 
@@ -10,30 +17,43 @@ export const FacebookAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  let userByEmail;
-  let userName;
-
-  const searchUserByEmail = async email => {
+  const checkUserByEmail = async (email, name, token, id) => {
     const usersRef = collection(db, 'users');
     const q = query(usersRef, where('email', '==', email));
     const querySnapshot = await getDocs(q);
 
-    querySnapshot.forEach(doc => {
-      userByEmail = doc.data().email;
-      userName = doc.data().name;
-    });
-    return userByEmail;
-  };
+    const emailNotExists = querySnapshot._snapshot.docChanges.length === 0;
 
-  const searchUsersName = async email => {
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('email', '==', email));
-    const querySnapshot = await getDocs(q);
+    if (emailNotExists) {
+      await setDoc(doc(db, 'users', id), {
+        name,
+        email,
+        sex: 'not specified',
+        role: 'not specified',
+      });
 
-    querySnapshot.forEach(doc => {
-      userName = doc.data().name;
-    });
-    return userName;
+      dispatch(
+        setUser({
+          name,
+          email,
+          id,
+          token,
+        })
+      );
+    } else {
+      for (const doc of querySnapshot.docs) {
+        dispatch(
+          setUser({
+            name: doc.data().name,
+            email,
+            id,
+            token,
+          })
+        );
+      }
+    }
+
+    navigate('/');
   };
 
   const handleFacebookAuth = () => {
@@ -41,31 +61,12 @@ export const FacebookAuth = () => {
     const auth = getAuth();
 
     signInWithPopup(auth, provider)
-      .then(result => {
+      .then(async result => {
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const user = result.user;
-        dispatch(
-          setUser({
-            name: userByEmail === user.email ? userName : user.displayName,
-            email: user.email,
-            id: user.uid,
-            token,
-          })
-        );
-        // navigate('/');
-        console.log(userByEmail);
-        console.log(userName);
-        searchUserByEmail(user.email);
-        searchUsersName(user.email);
-        if (userByEmail !== user.email) {
-          addDoc(collection(db, 'users'), {
-            name: user.displayName,
-            email: user.email,
-            sex: 'not specified',
-            role: 'not specified',
-          });
-        }
+
+        await checkUserByEmail(user.email, user.displayName, token, user.uid);
       })
       .catch(error => {
         console.log(error.message);

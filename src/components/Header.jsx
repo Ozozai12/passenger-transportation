@@ -29,12 +29,9 @@ export const Header = () => {
       )}
       {admin && <Link to="admin">Editing users</Link>}
       {user ? (
-        <p>
-          {user}
-          <button type="button" onClick={() => handleLogout()}>
-            Logout
-          </button>
-        </p>
+        <button type="button" onClick={() => handleLogout()}>
+          Logout
+        </button>
       ) : (
         ''
       )}

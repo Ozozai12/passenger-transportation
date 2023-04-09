@@ -62,7 +62,6 @@ export const AdminDashboard = () => {
                     </label>
                   </>
                 )}
-                <p>Sex: {user.sex}</p>
               </li>
             );
           })}
